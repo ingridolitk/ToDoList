@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.todolist"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.todolist"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -48,6 +48,13 @@ android {
         }
     }
 }
+configurations.all {
+    resolutionStrategy {
+       // force("org.jetbrains:annotations:23.0.0")
+        // ou use essa linha se quiser forçar a versão antiga:
+         force("com.intellij:annotations:12.0")
+    }
+}
 
 dependencies {
 
@@ -82,4 +89,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    //Compose Navigation
+    implementation(libs.android.compose.navigation)
 }

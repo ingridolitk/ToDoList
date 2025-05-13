@@ -12,6 +12,7 @@ room = "2.6.1"
 coroutines = "1.7.3"
 hilt = "2.50"
 hilt_navigation = "1.1.0"
+nav_version = "2.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,7 +46,9 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation" }
 
+#Compose Navigation
+android-compose-navigation = {group = "androidx.navigation", name = "navigation-compose", version = "nav_version"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
