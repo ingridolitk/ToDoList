@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.ToDoList" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.ToDoList" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor" parent = "android:Theme.Light">@android:color/holo_purple</item>
+    </style>
 </resources>

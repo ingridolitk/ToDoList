@@ -6,7 +6,10 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.todolist.R
 
 
 @Composable
@@ -14,19 +17,27 @@ fun ListScreen(
     navigateToTaskScreen: (Int) -> Unit
 ) {
     Scaffold(
+        topBar = {
+            ListAppBar()
+        },
         content = {},
         floatingActionButton = {
-
+            ListFab(navigateToTaskScreen = navigateToTaskScreen)
         }
     )
 }
 
 @Composable
-fun ListFab() {
-    FloatingActionButton(onClick = {}) {
+fun ListFab(
+    navigateToTaskScreen: (Int) -> Unit
+) {
+    FloatingActionButton(onClick = {
+        navigateToTaskScreen(-1)
+    }) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = "Add Button"
+            contentDescription = stringResource(id = R.string.floating_fab_list_button),
+            tint = Color.White
         )
     }
 }

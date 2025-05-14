@@ -1,7 +1,20 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("org.jetbrains.kotlin.kapt")
+    id("com.google.dagger.hilt.android")
 }
+
+configurations.all {
+    resolutionStrategy {
+        eachDependency {
+            if (requested.group == "org.jetbrains" && requested.name == "annotations") {
+                useTarget("com.intellij:annotations:12.0")
+            }
+        }
+    }
+}
+
 
 android {
     namespace = "com.example.todolist"
@@ -10,7 +23,7 @@ android {
     defaultConfig {
         applicationId = "com.example.todolist"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -42,18 +55,15 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+
     packaging {
         resources {
+            excludes += "META-INF/gradle/incremental.annotation.processors"
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-}
-configurations.all {
-    resolutionStrategy {
-       // force("org.jetbrains:annotations:23.0.0")
-        // ou use essa linha se quiser forçar a versão antiga:
-         force("com.intellij:annotations:12.0")
-    }
+
+
 }
 
 dependencies {
@@ -76,7 +86,7 @@ dependencies {
 
     //Room Database
     implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
+    kapt(libs.room.compiler)
     implementation(libs.room.ktx)
     implementation(libs.room.paging)
     testImplementation(libs.room.testing)
