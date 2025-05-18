@@ -13,6 +13,7 @@ coroutines = "1.7.3"
 hilt = "2.50"
 hilt_navigation = "1.1.0"
 nav_version = "2.9.0"
+composeMaterial = "1.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,7 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 
 #Compose Navigation
 android-compose-navigation = {group = "androidx.navigation", name = "navigation-compose", version = "nav_version"}
+androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

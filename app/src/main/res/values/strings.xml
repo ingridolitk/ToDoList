@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ToDo List</string>
     <string name="floating_fab_list_button">Botão Fab List</string>
+    <string name="search_task">Search Task</string>
+    <string name="sort_action">Sort Task</string>
+    <string name="delete_all_action">Delete All</string>
 </resources>
