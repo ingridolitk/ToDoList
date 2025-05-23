@@ -21,9 +21,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -43,19 +43,42 @@ import com.example.todolist.ui.theme.TOP_APP_BAR_HEIGHT
 import com.example.todolist.ui.theme.Typography
 import com.example.todolist.ui.theme.topAppBarBackgroundColor
 import com.example.todolist.ui.theme.topAppBarContentColor
+import com.example.todolist.ui.viewmodel.SharedViewModel
+import com.example.todolist.util.SearchAppBarState
+import com.example.todolist.util.TrailingIconState
+import com.example.todolist.util.empty
 
 @Composable
-fun ListAppBar() {
-//    DefaultListAppBar(onSearchClicked = {},
-//        onSortClicked = {},
-//        onDeleteClicked = {})
+fun ListAppBar(
+    sharedViewModel: SharedViewModel,
+    searchAppBarState: SearchAppBarState,
+    searchTextState: String
+) {
+    when (searchAppBarState) {
+        SearchAppBarState.OPENED -> {
+            DefaultListAppBar(
+                onSearchClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
+                },
+                onSortClicked = {},
+                onDeleteClicked = {}
+            )
+        }
 
-    SearchAppBar(
-        text = "",
-        onTextChange = {},
-        onCloseClicked = {},
-        onSearchClicked = {}
-    )
+        else -> {
+            SearchAppBar(
+                text = searchTextState,
+                onTextChange = { newText ->
+                    sharedViewModel.searchTextState.value = newText
+                },
+                onCloseClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
+                    sharedViewModel.searchTextState.value = String.empty()
+                },
+                onSearchClicked = {}
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,7 +90,10 @@ fun DefaultListAppBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = "Tasks", color = MaterialTheme.colorScheme.topAppBarContentColor)
+            Text(
+                text = stringResource(id = R.string.list_screen_title),
+                color = MaterialTheme.colorScheme.topAppBarContentColor
+            )
         },
         actions = {
             DefaultListAppBarActions(
@@ -198,6 +224,10 @@ fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
+    var trailingIconState by remember {
+        mutableStateOf(TrailingIconState.READY_TO_DELETE)
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -214,7 +244,7 @@ fun SearchAppBar(
                 Text(
                     modifier = Modifier
                         .alpha(ContentAlpha.medium),
-                    text = "Search",
+                    text = stringResource(R.string.search_placeholder),
                     color = Color.White
                 )
             },
@@ -232,7 +262,7 @@ fun SearchAppBar(
                     }) {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = "Search Icon",
+                        contentDescription = stringResource(id = R.string.search_icon),
                         tint = MaterialTheme.colorScheme.topAppBarContentColor
                     )
                 }
@@ -240,12 +270,27 @@ fun SearchAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        onCloseClicked()
+                        when (trailingIconState) {
+                            TrailingIconState.READY_TO_DELETE -> {
+                                onTextChange(String.empty())
+                                trailingIconState = TrailingIconState.READY_TO_CLOSE
+                            }
+
+                            TrailingIconState.READY_TO_CLOSE -> {
+                                if (text.isNotEmpty()) {
+                                    onTextChange(String.empty())
+                                } else {
+                                    onCloseClicked()
+                                    trailingIconState = TrailingIconState.READY_TO_DELETE
+                                }
+                            }
+                        }
+
                     }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Close,
-                        contentDescription = "Close Icon",
+                        contentDescription = stringResource(id = R.string.closed_icon),
                         tint = MaterialTheme.colorScheme.topAppBarContentColor
                     )
                 }
