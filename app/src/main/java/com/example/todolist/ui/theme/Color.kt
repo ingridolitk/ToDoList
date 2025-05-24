@@ -1,5 +1,6 @@
 package com.example.todolist.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -21,12 +22,11 @@ val LowPriorityColor = Color(0xFF00C980)
 val MediumPriorityColor = Color(0xFFFFC114)
 val HighPriorityColor = Color(0xFFFF4646)
 val NonePriorityColor = Color(0xFFFFFFFF)
-const val isLight: Boolean = true
 
 val ColorScheme.topAppBarContentColor: Color
     @Composable
-    get() = if (isLight) Color.White else Color.LightGray
+    get() = if (isSystemInDarkTheme()) Color.White else Color.LightGray
 
 val ColorScheme.topAppBarBackgroundColor: Color
     @Composable
-    get() = if (isLight) Purple40 else Color.Black
+    get() = if (isSystemInDarkTheme()) Purple40 else Color.Black

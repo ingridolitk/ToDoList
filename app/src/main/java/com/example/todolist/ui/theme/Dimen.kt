@@ -11,3 +11,5 @@ val TOP_APP_BAR_HEIGHT = 56.dp
 
 val ELEVATION_ACTION = 4.dp
 val TASK_ITEM_ELEVATION = 2.dp
+
+val ICON_SAD_FACE = 120.dp

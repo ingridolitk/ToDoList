@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -25,20 +26,37 @@ import com.example.todolist.data.models.ToDoTask
 import com.example.todolist.ui.theme.LARGE_PADDING
 import com.example.todolist.ui.theme.PRIORITY_INDICATOR_SIZE
 import com.example.todolist.ui.theme.TASK_ITEM_ELEVATION
-import com.example.todolist.ui.theme.topAppBarContentColor
+import com.example.todolist.util.RequestState
+
 
 @Composable
 fun ListContent(
+    tasks: RequestState<List<ToDoTask>>,
+    navigateToTaskScreens: (taskId: Int) -> Unit
+) {
+    if (tasks is RequestState.Success) {
+        if (tasks.data.isEmpty()) {
+            EmptyContent()
+        } else {
+            DisplayTasks(
+                tasks = tasks.data,
+                navigateToTaskScreens = navigateToTaskScreens
+            )
+        }
+    }
+}
+
+@Composable
+fun DisplayTasks(
     tasks: List<ToDoTask>,
     navigateToTaskScreens: (taskId: Int) -> Unit
 ) {
     LazyColumn {
-        items(items = tasks,
-            key = { task ->
-                task.id
-            }) { task ->
-            TaskItem(toDoTask = task,
-                navigateToTaskScreens = navigateToTaskScreens)
+        items(items = tasks, key = { it.id }) { task ->
+            TaskItem(
+                toDoTask = task,
+                navigateToTaskScreens = navigateToTaskScreens
+            )
         }
     }
 }
@@ -51,7 +69,7 @@ fun TaskItem(
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
-        color = MaterialTheme.colorScheme.topAppBarContentColor,
+        color = Color.Magenta,
         shape = RectangleShape,
         shadowElevation = TASK_ITEM_ELEVATION,
         onClick = {
@@ -65,17 +83,14 @@ fun TaskItem(
         ) {
             Row {
                 Text(
-                    modifier = Modifier.weight(8f),
                     text = toDoTask.title,
-                    color = MaterialTheme.colorScheme.topAppBarContentColor,
+                    color = Color.Black,
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1
                 )
                 Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                    modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.TopEnd
                 ) {
                     Canvas(
@@ -87,16 +102,15 @@ fun TaskItem(
                             color = toDoTask.priority.color
                         )
                     }
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = toDoTask.description,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.labelSmall,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
                 }
             }
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = toDoTask.description,
+                style = MaterialTheme.typography.labelSmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }
@@ -109,7 +123,7 @@ fun TaskItemPreview() {
             id = 0,
             title = "Title",
             description = "Some random text",
-            priority = Priority.MEDIUM
+            priority = Priority.LOW
         ),
         navigateToTaskScreens = {}
     )
