@@ -2,9 +2,8 @@ package com.example.todolist.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
+import androidx.navigation.compose.NavHost
 import com.example.todolist.navigation.destinations.listComposable
 import com.example.todolist.navigation.destinations.taskComposable
 import com.example.todolist.ui.viewmodel.SharedViewModel
@@ -14,16 +13,21 @@ import com.example.todolist.util.Constants.LIST_SCREEN
 fun SetupNavigation(
     navController: NavHostController,
     sharedViewModel: SharedViewModel
-){
-    val screen = remember(navController){
+) {
+    val screen = remember(navController) {
         Screens(navController = navController)
     }
 
-    NavHost(navController = navController, startDestination = LIST_SCREEN){
+    NavHost(
+        navController = navController,
+        startDestination = LIST_SCREEN
+    ) {
         listComposable(
             navigateToTaskScreen = screen.task,
             sharedViewModel = sharedViewModel
         )
-        taskComposable(navigateToListScreen = screen.list, selectTask = )
+        taskComposable(
+            navigateToListScreen = screen.list,
+            sharedViewModel = sharedViewModel)
     }
 }

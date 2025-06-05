@@ -6,11 +6,17 @@ import com.example.todolist.data.models.ToDoTask
 import com.example.todolist.util.Action
 
 @Composable
-fun TaskScreen(navigateToListScreen: (Action) -> Unit, selectTask: ToDoTask,) {
+fun TaskScreen(
+    navigateToListScreen: (Action) -> Unit,
+    selectTask: ToDoTask
+) {
 
     Scaffold(
         topBar = {
-            TaskAppBar(navigateToListScreen = navigateToListScreen, selectTask = selectTask)
+            TaskAppBar(
+                navigateToListScreen = navigateToListScreen,
+                selectTask = selectTask
+            )
         },
         content = {}
     )

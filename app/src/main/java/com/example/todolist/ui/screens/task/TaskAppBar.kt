@@ -24,9 +24,12 @@ import com.example.todolist.ui.theme.topAppBarContentColor
 import com.example.todolist.util.Action
 
 @Composable
-fun TaskAppBar(navigateToListScreen: (Action) -> Unit, selectTask: ToDoTask) {
-    NewTaskAppBar(navigateToListScreen = navigateToListScreen)
-    ExistingTaskAppBar(navigateToListScreen = navigateToListScreen, selectTask = selectTask)
+fun TaskAppBar(navigateToListScreen: (Action) -> Unit, selectTask: ToDoTask?) {
+    if (selectTask != null) {
+        ExistingTaskAppBar(navigateToListScreen = navigateToListScreen, selectTask = selectTask)
+    } else {
+        NewTaskAppBar(navigateToListScreen = navigateToListScreen)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
